@@ -1,0 +1,29 @@
+load("@rules_cc//cc:defs.bzl", "cc_test", "cc_library")
+
+cc_library(
+    name = "lib",
+    hdrs = ["test.hpp"],
+)
+
+_tests = [
+    "base_test",
+    "bounded_buffer_comparison",
+    "constant_erase_test",
+    "soft_iterator_invalidation",
+    "space_optimized_test",
+]
+
+[cc_test(
+    name = test_name,
+    srcs = [
+        test_name + ".cpp",
+        "common.ipp"
+    ],
+    deps = [
+        ":lib",
+        "//:circular_buffer",
+        "@boost//libs/concept_check",
+        "@boost//libs/thread",
+        "@boost//libs/timer",
+    ],
+) for test_name in _tests]
